@@ -1,0 +1,19 @@
+{
+  "name": "language-ezml",
+  "version": "0.1.0",
+  "description": "EZML Language Support in Atom",
+  "keywords": [
+    "language",
+    "grammar",
+    "EZML"
+  ],
+  "repository": "https://github.com/stormburpee/language-ezml",
+  "license": "MIT",
+  "engines": {
+    "atom": "*",
+    "node": "*"
+  },
+  "devDependencies": {
+    "coffeelint": "^1.10.1"
+  }
+}

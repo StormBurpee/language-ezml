@@ -1,0 +1,197 @@
+'fileTypes': [
+  'ezmlc'
+]
+'foldingStartMarker': '^\\s*([-%#\\:\\.\\w\\=].*)\\s$'
+'foldingStopMarker': '^\\s*$'
+'name': 'Coffee EZML'
+'patterns': [
+  {
+    'captures':
+      '1':
+        'name': 'punctuation.definition.prolog.ezml'
+    'match': '^(!!!)($|\\s.*)'
+    'name': 'meta.prolog.ezml'
+  }
+  {
+    'captures':
+      '1':
+        'name': 'punctuation.section.comment.ezml'
+    'match': '^ *(/)\\s*\\S.*$\\n?'
+    'name': 'comment.line.slash.ezml'
+  }
+  {
+    'begin': '^( *)(/)\\s*$'
+    'beginCaptures':
+      '2':
+        'name': 'punctuation.section.comment.ezml'
+    'end': '^(?! *$|\\1 )'
+    'name': 'comment.block.ezml'
+    'patterns': [
+      {
+        'include': 'text.ezml'
+      }
+    ]
+  }
+  {
+    'begin': '^\\s*(?:((%)([\\w:-]+))|(?=\\.|#))'
+    'captures':
+      '1':
+        'name': 'meta.tag.ezml'
+      '2':
+        'name': 'punctuation.definition.tag.ezml'
+      '3':
+        'name': 'entity.name.tag.ezml'
+    'end': '$|(?!\\.|#|\\{|\\[|\\(|=|-|~|/)'
+    'patterns': [
+      {
+        'match': '\\.[\\w-]+'
+        'name': 'entity.name.tag.class.ezml'
+      }
+      {
+        'match': '#[\\w-]+'
+        'name': 'entity.name.tag.id.ezml'
+      }
+      {
+        'begin': '\\{(?=.*\\}|.*(\\||,)\\s*$)'
+        'end': '(\\}$|\\}(\\s+)?\\|(\\s+)?$)'
+        'name': 'meta.section.attributes.ezml'
+        'patterns': [
+          {
+            'include': 'source.coffee'
+          }
+          {
+              'include': '#continuation'
+          }
+        ]
+      }
+      {
+        'begin': '\\(|\\((?=.*\\)|.*\\|\\s*$)'
+        'end': '\\)'
+        'name': 'meta.section.attributes.ezml'
+        'patterns': [
+          {
+            'include': '#tag-stuff'
+          }
+          {
+            'include': 'source.coffee'
+          }
+        ]
+      }
+      {
+        'begin': '\\[(?=.*\\]|.*\\|\\s*$)'
+        'end': '\\]|$|^(?!.*\\|\\s*$)'
+        'name': 'meta.section.object.ezml'
+        'patterns': [
+          {
+            'include': 'source.coffee'
+          }
+          {
+            'include': '#continuation'
+          }
+        ]
+      }
+      {
+        'include': '#coffeeline'
+      }
+      {
+        'match': '/'
+        'name': 'punctuation.terminator.tag.ezml'
+      }
+    ]
+  }
+  {
+    'captures':
+      '1':
+        'name': 'meta.escape.ezml'
+    'match': '^\\s*(\\\\.)'
+  }
+  {
+    'begin': '^\\s*(?==|-|~|!=)'
+    'end': '$'
+    'patterns': [
+      {
+        'include': '#coffeeline'
+      }
+    ]
+  }
+  {
+    'begin': '^(\\s*)(:css)'
+    'beginCaptures':
+      '2':
+        'name': 'entity.name.tag.ezml'
+    'end': '^(?! *$|\\1 )'
+    'name': 'source.css.embedded.html'
+    'patterns': [
+      {
+        'include': 'source.css'
+      }
+    ]
+  }
+  {
+    'begin': '^(\\s*)(:javascript)'
+    'beginCaptures':
+      '2':
+        'name': 'entity.name.tag.ezml'
+    'end': '^(?! *$|\\1 )'
+    'name': 'source.js.embedded.html'
+    'patterns': [
+      {
+        'include': 'source.js'
+      }
+    ]
+  }
+  {
+    'begin': '#\{'
+    'captures': {
+      '0': {
+        'name': 'punctuation.section.embedded.coffee'
+      }
+    }
+    'end': '}'
+    'name': 'source.coffee.embedded.html'
+    'patterns': [
+      {
+        'include': 'source.coffee'
+      }
+    ]
+  }
+]
+'repository':
+  'continuation':
+    'captures':
+      '1':
+        'name': 'punctuation.separator.continuation.ezml'
+    'match': '(\\|,)\\s*\\n'
+  'coffeeline':
+    'begin': '=|-|~'
+    'contentName': 'source.coffee.embedded.ezml'
+    'end': '((do|\\{)( \\|[^|]+\\|)?)$|$|^(?!.*\\|\\s*$)'
+    'endCaptures':
+      '1':
+        'name': 'source.coffee.embedded.html'
+      '2':
+        'name': 'keyword.control.coffee.start-block'
+    'name': 'meta.line.coffee.ezml'
+    'patterns': [
+      {
+        'comment': 'Hack to let coffee comments work in this context properly'
+        'match': '#.*$'
+        'name': 'comment.line.number-sign.coffee'
+      }
+      {
+        'include': 'source.coffee'
+      }
+      {
+        'include': '#continuation'
+      }
+    ]
+  'tag-generic-attribute':
+    'match': '\\b([a-zA-Z\\-:]+)'
+    'name': 'entity.other.attribute-name.ezml'
+  'tag-stuff':
+    'patterns': [
+      {
+        'include': '#tag-generic-attribute'
+      }
+    ]
+'scopeName': 'text.ezmlc'
